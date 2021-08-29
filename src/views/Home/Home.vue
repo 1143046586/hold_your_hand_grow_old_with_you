@@ -3,7 +3,7 @@
     <van-dialog v-model:show="show" title="请选择你的生日！" @confirm="onConfirm">
       <van-datetime-picker v-model="currentDate" :show-toolbar="false" type="date" :min-date="minDate" :max-date="maxDate" :visible-item-count="4" />
     </van-dialog>
-    <div class="flex" v-show="showHeart">
+    <div class="flex heart-box" v-show="showHeart">
       <svg class="heart left" viewBox="0 0 40 70" version="1.1">
         <path class="left-half-heart" stroke-width="2" fill="#f7d7f3" d="M60,30 a30,30 0 0,1 0,60 L0,90 0,30 a30,30 0 0,1 60,0"></path>
       </svg>
@@ -12,6 +12,7 @@
       </svg>
     </div>
     <img class="bg" src="../../assets/bg1.jpg" alt="" />
+    <div class="mask"></div>
   </div>
 </template>
 
@@ -113,7 +114,11 @@ export default {
               },
               1000,
               () => {
-                router.push('/time');
+                $('.heart-box').fadeOut(1000, () => {
+                  $('.mask').animate({ opacity: 1 }, 1000, () => {
+                    router.push('/time');
+                  });
+                });
               }
             );
           }
@@ -193,7 +198,7 @@ export default {
   },
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .home-page {
   height: 100%;
   width: 100%;
@@ -235,8 +240,22 @@ export default {
     position: absolute;
     left: 0;
     top: -15%;
-    z-index: 98;
+    z-index: 1;
     width: 100%;
+  }
+  .heart-box {
+    opacity: 1;
+    z-index: 99;
+  }
+  .mask {
+    width: 100%;
+    height: 100%;
+    z-index: 98;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+    opacity: 0;
   }
 }
 </style>

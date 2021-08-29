@@ -1,5 +1,6 @@
 <template>
   <div class="time-line">
+    <div class="mask"></div>
     <van-steps class="steps" direction="vertical" inactive-color="#f60" active-color="rgb(245 170 246)" :active="list.length - 1">
       <van-step v-for="(item, index) in list" v-bind:key="index">
         <TextCard v-if="item.type === CardType.Text" :data="item.data" />
@@ -8,7 +9,8 @@
   </div>
 </template>
 <script lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import $ from 'jquery';
 import TextCard from './components/TextCard.vue';
 import dayjs from 'dayjs';
 
@@ -126,6 +128,9 @@ export default {
   },
   setup() {
     const list = ref(listData);
+    onMounted(() => {
+      $('.mask').fadeOut(1000);
+    });
     return { list, CardType };
   },
 };
@@ -147,5 +152,15 @@ export default {
   top: 0;
   height: 100%;
   width: 100%;
+}
+.mask {
+  width: 100%;
+  height: 100%;
+  z-index: 98;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+  opacity: 1;
 }
 </style>
